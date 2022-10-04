@@ -1,0 +1,137 @@
+{% extends "layout/base.html" %}
+
+{% block title %}{{ item.name }}{% endblock %}
+
+{% block main %}
+<div id="t3-mainbody" class="container t3-mainbody">
+  <div class="row">
+    <!-- MAIN CONTENT -->
+    <div id="t3-content" class="t3-content col-xs-12">
+      <div class="item-page clearfix">
+        <!-- Article -->
+        <article itemscope="" itemtype="http://schema.org/Article">
+          <meta itemprop="inLanguage" content="en-GB" />
+
+          <header class="article-header clearfix">
+            <h1 class="article-title" itemprop="headline">
+              {{ item.name }}
+              <meta
+                itemprop="url"
+                content="https://customsinlandrevenue.gov.vu/index.php/customs-online-sale/1675-lot-24-vsea"
+              />
+            </h1>
+          </header>
+
+          <!-- Aside -->
+          <!-- //Aside -->
+
+          <figure
+            class="pull-left item-image article-image article-image-full"
+          >
+            <span
+              itemprop="image"
+              itemscope=""
+              itemtype="https://schema.org/ImageObject"
+            >
+              <img
+                src="{{ item.src }}"
+                alt=""
+                itemprop="url"
+              />
+              <meta itemprop="height" content="auto" />
+              <meta itemprop="width" content="auto" />
+            </span>
+          </figure>
+
+          <section
+            class="article-content clearfix"
+            itemprop="articleBody"
+          >
+            <p>{{ item.description }}</p>
+            <div
+              class="j2store-product j2store-product-{{ item.id }} product-{{ item.id }} simple default"
+            >
+              <div class="product-price-container">
+                <div class="sale-price">{{ item.unit_price | vatu_price }}</div>
+              </div>
+
+              <div class="product-stock-container">
+                <span class="instock"> </span>
+              </div>
+
+              <!-- check for catalog mode -->
+
+              <form
+                action="/component/j2store/carts/addItem"
+                method="post"
+                class="j2store-addtocart-form"
+                id="j2store-addtocart-form-{{ item.id }}"
+                name="j2store-addtocart-form-{{ item.id }}"
+                data-product_id="{{ item.id }}"
+                data-product_type="simple"
+                enctype="multipart/form-data"
+              >
+                <div class="cart-action-complete" style="display:none;">
+                  <p class="text-success">
+                    Item added to cart.
+                    <a
+                      href=""
+                      class="j2store-checkout-link"
+                    >
+                      Checkout
+                    </a>
+                  </p>
+                </div>
+
+                <div id="add-to-cart-{{ item.id }}" class="j2store-add-to-cart">
+                  <input type="hidden" name="product_qty" value="{{ item.form_data.product_qty }}" />
+                  <input
+                    type="hidden"
+                    id="j2store_product_id_{{ item.id }}"
+                    name="product_id"
+                    value="{{ item.id }}"
+                  />
+
+                  <input
+                    data-cart-action-always="Adding..."
+                    data-cart-action-done="Add to cart"
+                    data-cart-action-timeout="1000"
+                    value="Add to cart"
+                    type="submit"
+                    class="j2store-cart-button btn btn-primary"
+                  />
+                </div>
+
+                <input
+                  type="hidden"
+                  name="option"
+                  value="com_j2store"
+                />
+                <input type="hidden" name="view" value="carts" />
+                <input type="hidden" name="task" value="addItem" />
+                <input type="hidden" name="ajax" value="1" />
+                <input
+                  type="hidden"
+                  name="de2210ba2bd96e3c9c9c333e33678c46"
+                  value="1"
+                />
+                <input
+                  type="hidden"
+                  name="return"
+                  value="{{ item.form_data.return }}"
+                />
+                <div class="j2store-notifications"></div>
+              </form>
+            </div>
+          </section>
+
+          <!-- footer -->
+          <!-- //footer -->
+        </article>
+        <!-- //Article -->
+      </div>
+    </div>
+    <!-- //MAIN CONTENT -->
+  </div>
+</div>
+{% endblock %}

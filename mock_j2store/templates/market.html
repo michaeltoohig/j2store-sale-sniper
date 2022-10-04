@@ -1,0 +1,235 @@
+{% extends "layout/base.html" %}
+
+{% macro market_item(item) %}
+<div class="col col-sm-6 col-md-3">
+  <div class="item column-1" style="min-height: 613px;">
+    <a
+      href="/customs-online-sale/{{ item.id }}-{{ item.name }}"
+      class="entry-link"
+    ></a>
+    <!-- Article -->
+    <article>
+      <div class="pull-left item-image">
+        <a
+          href="#"
+          ><img
+            src="{{ item.src }}"
+            alt=""
+            itemprop="thumbnailUrl"
+        /></a>
+      </div>
+
+      <header class="article-header clearfix">
+        <h2 class="article-title" itemprop="headline">
+          <a
+            href="#"
+            itemprop="url"
+            title="{{ item.name }}"
+          >
+            {{ item.name }}
+          </a>
+        </h2>
+      </header>
+
+      <section
+        class="article-intro clearfix"
+        itemprop="articleBody"
+      >
+        <p>{{ item.description }}</p>
+        <p>&nbsp;</p>
+        <div
+          class="j2store-product-images j2store-product-images-{{ item.id }}"
+        ></div>
+        <script>
+          j2store.jQuery(document).ready(function(){
+              j2store.jQuery( 'body' ).on( 'after_doAjaxFilter', function( e, product, response ){
+                  j2store.jQuery('img.zoomImg').remove();
+                  j2store.jQuery('#j2store-item-main-image-{{ item.id }}').zoom();
+              });
+          });
+        </script>
+        <div
+          class="j2store-product j2store-product-{{ item.id }} product-{{ item.id }} simple default"
+        >
+          <div class="product-price-container">
+            <div class="sale-price">{{ item.unit_price | vatu_price }}</div>
+          </div>
+
+          <div class="product-stock-container">
+            <span class="instock"> </span>
+          </div>
+
+          <!-- check for catalog mode -->
+
+          <form
+            action="/index.php/component/j2store/carts/addItem"
+            method="post"
+            class="j2store-addtocart-form"
+            id="j2store-addtocart-form-{{ item.id }}"
+            name="j2store-addtocart-form-{{ item.id }}"
+            data-product_id="{{ item.id }}"
+            data-product_type="simple"
+            enctype="multipart/form-data"
+          >
+            <div
+              class="cart-action-complete"
+              style="display:none;"
+            >
+              <p class="text-success">
+                Item added to cart.
+                <a
+                  href="https://customsinlandrevenue.gov.vu/index.php/component/j2store/carts"
+                  class="j2store-checkout-link"
+                >
+                  Checkout
+                </a>
+              </p>
+            </div>
+
+            <div
+              id="add-to-cart-{{ item.id }}"
+              class="j2store-add-to-cart"
+            >
+              <input
+                type="hidden"
+                name="product_qty"
+                value="{{ item.form_data.product_qty }}"
+              />
+              <input
+                type="hidden"
+                id="j2store_product_id_{{ item.id }}"
+                name="product_id"
+                value="{{ item.id }}"
+              />
+
+              <input
+                data-cart-action-always="Adding..."
+                data-cart-action-done="Add to cart"
+                data-cart-action-timeout="1000"
+                value="Add to cart"
+                type="submit"
+                class="j2store-cart-button btn btn-primary"
+              />
+            </div>
+
+            <input
+              type="hidden"
+              name="option"
+              value="com_j2store"
+            />
+            <input type="hidden" name="view" value="carts" />
+            <input
+              type="hidden"
+              name="task"
+              value="addItem"
+            />
+            <input type="hidden" name="ajax" value="0" />
+            <input
+              type="hidden"
+              name="57607a8e75dfdf2de988e023bd325fc0"
+              value="1"
+            />
+            <input
+              type="hidden"
+              name="return"
+              value="{{ item.form_data.return }}"
+            />
+            <div class="j2store-notifications"></div>
+          </form>
+        </div>
+      </section>
+    </article>
+    <!-- //Article -->
+  </div>
+  <!-- end item -->
+</div>
+<!-- end span -->
+{% endmacro %}
+
+{% block title %}Customs online sale{% endblock %}
+
+{% macro pagination_section(items, pagination) %}
+<div class="pagination-wrap">
+  <div class="counter">Page {{ pagination.current_page }} of {{ pagination.total_pages }}</div>
+  <ul class="pagination">
+    {% if pagination.current_page == 1 %}
+    <li class="disabled"><a>Start</a></li>
+    {% else %}
+    <li>
+      <a
+        title="Start"
+        href="{{ pagination.start }}"
+        >Start</a
+      >  
+    </li>
+    {% endif %}
+    {% if pagination.current_page == 1 %}
+    <li class="disabled"><a>Prev</a></li>
+    {% else %}
+    <li>
+      <a
+        title="Prev"
+        href="{{ pagination.prev }}"
+        >Prev</a
+      >  
+    </li>
+    {% endif %}
+    {% for page in range(pagination.total_pages) %}
+    {% set page = page + 1 %}
+    {% if page == pagination.current_page %}
+    <li class="active"><a>1</a></li>
+    {% else %}
+    <li>
+      <a
+        title="{{ page }}"
+        href="{{ pagination[page] }}"
+        >{{ page }}</a
+      >
+    </li>
+    {% endif %}
+    {% endfor %}
+    {% if pagination.current_page == pagination.total_pages %}
+    <li class="disabled"><a>Next</a></li>
+    {% else %}
+    <li>
+      <a
+        title="Next"
+        href="{{ pagination.next }}"
+        >Next</a
+      >
+    </li>
+    {% endif %}
+    {% if pagination.current_page == pagination.total_pages %}
+    <li class="disabled"><a>End</a></li>
+    {% else %}
+    <li>
+      <a
+        title="End"
+        href="{{ pagination.end }}"
+        >End</a
+      >
+    </li>
+    {% endif %}
+  </ul>
+</div>
+{% endmacro %}
+
+{% block main %}
+<div id="t3-content" class="t3-content col-xs-12">
+  <div class="blog blog-service">
+    <div class="category-desc clearfix"></div>                
+    {% for row in items | batch(4) %}
+    <div
+      class="items-row cols-4 row-0 row equal-height equal-height-child"
+    >
+      {% for item in row %}
+        {{ market_item(item) }}
+      {% endfor %}
+    </div>
+    <!-- end row -->
+    {% endfor %}
+
+    {{ pagination_section(items, pagination) }}
+  </div>
+</div>
+{% endblock %}

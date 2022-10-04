@@ -1,0 +1,911 @@
+{% extends "layout/base.html" %}
+
+{% block title %}Customs and Inland Revenue{% endblock %}
+
+{% block main %}
+<div id="t3-mainbody" class="container t3-mainbody">
+  <div class="row">
+    <!-- MAIN CONTENT -->
+    <div id="t3-content" class="t3-content col-xs-12">
+      <div id="system-message-container"></div>
+
+      <div id="akeeba-renderjoomla">
+        <div id="j2store-checkout" class="j2store checkout">
+          <div id="j2store-checkout-content">
+            <h1>Checkout</h1>
+
+            <div id="checkout">
+              <div class="checkout-heading">Checkout Options</div>
+              <div class="checkout-content"></div>
+            </div>
+            <div id="billing-address">
+              <div class="checkout-heading">
+                <span>Billing Address</span>
+              </div>
+              <div class="checkout-content" style="display: block;">
+                <div id="akeeba-renderjoomla">
+                  <input
+                    type="radio"
+                    name="billing_address"
+                    value="existing"
+                    id="billing-address-existing"
+                    checked="checked"
+                  />
+                  <label for="billing-address-existing"
+                    >I want to use an existing address</label
+                  >
+                  <div id="billing-existing">
+                    <select
+                      name="address_id"
+                      style="width: 100%; margin-bottom: 15px;"
+                      size="5"
+                    >
+                      <option value="971" selected="selected">
+                        John Malco, Namba 2, Port Vila, , , Vanuatu
+                      </option>
+                    </select>
+                  </div>
+                  <p>
+                    <input
+                      type="radio"
+                      name="billing_address"
+                      value="new"
+                      id="billing-address-new"
+                    />
+                    <label for="billing-address-new"
+                      >Create a new address</label
+                    >
+                  </p>
+
+                  <div id="billing-new" style="display: none;">
+                    <div class="row-fluid">
+                      <div class="span6">
+                        <span class="j2store_field_required">*</span
+                        ><label for="first_name">First name</label
+                        ><input
+                          class="inputbox"
+                          id="first_name"
+                          type="text"
+                          name="first_name"
+                        /><br />
+                        <span class="j2store_field_required">*</span
+                        ><label for="last_name">Last name</label
+                        ><input
+                          class="inputbox"
+                          id="last_name"
+                          type="text"
+                          name="last_name"
+                        /><br />
+                        <label for="phone_1">Phone</label
+                        ><input
+                          class="inputbox"
+                          id="phone_1"
+                          type="text"
+                          name="phone_1"
+                        /><br />
+                        <span class="j2store_field_required">*</span
+                        ><label for="phone_2">Mobile</label
+                        ><input
+                          class="inputbox"
+                          id="phone_2"
+                          type="text"
+                          name="phone_2"
+                        /><br />
+                      </div>
+                      <div class="span6">
+                        <span class="j2store_field_required">*</span
+                        ><label for="address_1">Address Line 1</label
+                        ><input
+                          class="inputbox"
+                          id="address_1"
+                          type="text"
+                          name="address_1"
+                        /><br />
+                        <label for="address_2">Address Line 2</label
+                        ><input
+                          class="inputbox"
+                          id="address_2"
+                          type="text"
+                          name="address_2"
+                        /><br />
+                        <span class="j2store_field_required">*</span
+                        ><label for="city">City</label
+                        ><input
+                          class="inputbox"
+                          id="city"
+                          type="text"
+                          name="city"
+                        /><br />
+                        <span class="j2store_field_required">*</span
+                        ><label for="country_id">Country</label
+                        ><select
+                          id="country_id"
+                          name="country_id"
+                          size="1"
+                        >
+                          <option
+                            value="227"
+                            id="country_id_227"
+                            selected="selected"
+                          >
+                            Vanuatu
+                          </option></select
+                        ><br />
+                      </div>
+                    </div>
+                  </div>
+                  <br />
+                  <div class="buttons">
+                    <div class="left">
+                      <input
+                        type="button"
+                        value="Continue"
+                        id="button-billing-address"
+                        class="button btn btn-primary"
+                      />
+                    </div>
+                  </div>
+                  <input
+                    type="hidden"
+                    name="email"
+                    value="nowoh73891@ukgent.com"
+                  />
+                  <input
+                    type="hidden"
+                    name="task"
+                    value="billing_address_validate"
+                  />
+                  <input
+                    type="hidden"
+                    name="option"
+                    value="com_j2store"
+                  />
+                  <input type="hidden" name="view" value="checkout" />
+
+                  <script type="text/javascript">
+                    <!--
+                      (function($) {
+                        $(document).on('change', '#billing-address input[name=\'billing_address\']', function() {
+                          if (this.value == 'new') {
+                            $('#billing-existing').hide();
+                            $('#billing-new').show();
+                          } else {
+                            $('#billing-existing').show();
+                            $('#billing-new').hide();
+                          }
+                        });
+                      })(j2store.jQuery);
+                      //-->
+                  </script>
+
+                  <script type="text/javascript">
+                    <!--
+                      (function($) {
+                        $('#billing-address select[name=\'country_id\']').bind('change', function() {
+                          if (this.value == '') return;
+                          $.ajax({
+                            url: 'index.php?option=com_j2store&view=carts&task=getCountry&country_id=' + this.value,
+                            dataType: 'json',
+                            beforeSend: function() {
+                              $('#billing-address select[name=\'country_id\']').after('<span class="wait">&nbsp;<img src="/media/j2store/images/loader.gif" alt="" /></span>');
+                            },
+                            complete: function() {
+                              $('.wait').remove();
+                            },
+                            success: function(json) {
+                              if (json['postcode_required'] == '1') {
+                                $('#billing-postcode-required').show();
+                              } else {
+                                $('#billing-postcode-required').hide();
+                              }
+
+                              html = '<option value="">-- Select --</option>';
+
+                              if (json['zone'] != '') {
+                                default_zone_id = $('#billing-address #zone_id_default_value').val();
+                                for (i = 0; i < json['zone'].length; i++) {
+                                  html += '<option value="' + json['zone'][i]['j2store_zone_id'] + '"';
+
+                                  if (json['zone'][i]['j2store_zone_id'] == default_zone_id) {
+                                    html += ' selected="selected"';
+                                  }
+
+                                  html += '>' + json['zone'][i]['zone_name'] + '</option>';
+                                }
+                              } else {
+                                html += '<option value="0" selected="selected">J2STORE_CHECKOUT_NONE</option>';
+                              }
+
+                              $('#billing-address select[name=\'zone_id\']').html(html);
+                            },
+                            error: function(xhr, ajaxOptions, thrownError) {
+                              //alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+                            }
+                          });
+                        });
+                      })(j2store.jQuery);
+
+                      (function($) {
+                        if($('#billing-address select[name=\'country_id\']').length > 0) {
+                          $('#billing-address select[name=\'country_id\']').trigger('change');
+                        }
+                      })(j2store.jQuery);
+
+                      //-->
+                  </script>
+                </div>
+              </div>
+            </div>
+            <div id="shipping-payment-method">
+              <div class="checkout-heading">Payment Method</div>
+              <div class="checkout-content"></div>
+            </div>
+            <div id="confirm">
+              <div class="checkout-heading">Confirm order</div>
+              <div class="checkout-content"></div>
+            </div>
+          </div>
+        </div>
+        <script type="text/javascript">
+          <!--
+
+          var query = {};
+          query['option']='com_j2store';
+          query['view']='checkout';
+
+          //force utf
+          (function($) {
+            $(document).ready(function() {
+              $.ajaxSetup({
+                cache: false,
+                headers: {
+                  'Cache-Control': 'no-cache, no-store, must-revalidate',
+                  'Pragma': 'no-cache',
+                  'Expires': '0'
+                },
+                'beforeSend' : function(xhr) { xhr.overrideMimeType('text/html; charset=UTF-8'); }
+              });
+            });
+          })(j2store.jQuery);
+
+          (function($) {
+          $(document).on('change', '#checkout .checkout-content input[name=\'account\']', function() {
+            if ($(this).attr('value') == 'register') {
+              $('#billing-address .checkout-heading span').html('Account & Billing Details');
+            } else {
+              $('#billing-address .checkout-heading span').html('Billing Address');
+            }
+          });
+          })(j2store.jQuery);
+
+          (function($) {
+          $(document).on('click', '.checkout-heading a', function() {
+            $('.checkout-content').slideUp('slow');
+
+            $(this).parent().parent().find('.checkout-content').slideDown('slow');
+          });
+          })(j2store.jQuery);
+
+          //incase only guest checkout is allowed we got to process that first
+          (function($) {
+          $(document).ready(function() {
+            $.ajax({
+              url: '/index.php/component/j2store/carts',
+              type: 'post',
+              cache: false,
+              data: 'option=com_j2store&view=checkout&task=billing_address',
+              dataType: 'html',
+              success: function(html) {
+                $('#billing-address .checkout-content').html(html);
+
+                $('#billing-address .checkout-content').slideDown('slow');
+              },
+              error: function(xhr, ajaxOptions, thrownError) {
+                //alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+              }
+            });
+          });
+          })(j2store.jQuery);
+
+
+          //new account
+          (function($) {
+          $(document).on('click', '#button-account', function() {
+              var task = $('input[name=\'account\']:checked').attr('value');
+            $.ajax({
+              url: '/index.php/component/j2store/carts',
+              type: 'post',
+              cache: false,
+              data: 'option=com_j2store&view=checkout&task='+task,
+              dataType: 'html',
+              beforeSend: function() {
+                $('#button-account').attr('disabled', true);
+                $('#button-account').after('<span class="wait">&nbsp;<img src="/media/j2store/images/loader.gif" alt="" /></span>');
+              },
+              complete: function() {
+                $('#button-account').attr('disabled', false);
+                $('.wait').remove();
+              },
+              success: function(html) {
+                $('.warning, .j2error').remove();
+
+                $('#billing-address .checkout-content').html(html);
+
+                $('#checkout .checkout-content').slideUp('slow');
+
+                $('#billing-address .checkout-content').slideDown('slow');
+
+                $('.checkout-heading a').remove();
+
+                $('#checkout .checkout-heading').append('<a>Change</a>');
+              },
+              error: function(xhr, ajaxOptions, thrownError) {
+                //alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+              }
+            });
+          });
+          })(j2store.jQuery);
+
+          function loginKeyPress(e)
+          {
+            (function($) {
+              if(e.keyCode == 13){
+                $("#button-login").click();
+              }
+            })(j2store.jQuery);
+          }
+
+          //Login
+          (function($) {
+          $(document).on('click', '#button-login', function() {
+            $.ajax({
+              url: '/index.php/component/j2store/carts',
+              type: 'post',
+              cache: false,
+              data: $('#checkout #login :input'),
+              dataType: 'json',
+              beforeSend: function() {
+                $('#button-login').attr('disabled', true);
+                $('#button-login').after('<span class="wait">&nbsp;<img src="/media/j2store/images/loader.gif" alt="" /></span>');
+              },
+              complete: function() {
+                $('#button-login').attr('disabled', false);
+                $('.wait').remove();
+              },
+              success: function(json) {
+                $('.warning, .j2error').remove();
+
+                if (json['redirect']) {
+                  //it is sufficient to just reload the page
+                  window.location.href  = json['redirect'];
+                } else if (json['error']) {
+                  $('#checkout .checkout-content').prepend('<div class="warning alert alert-danger" style="display: none;">' + json['error']['warning'] + '<button data-dismiss="alert" class="close" type="button">×</button></div>');
+
+                  $('.warning').fadeIn('slow');
+                }
+              },
+              error: function(xhr, ajaxOptions, thrownError) {
+                //alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+              }
+            });
+          });
+          })(j2store.jQuery);
+
+          // Register
+          (function($) {
+          $(document).on('click', '#button-register', function() {
+            $.ajax({
+              url: '/index.php/component/j2store/carts',
+              type: 'post',
+              cache: false,
+              data: $('#billing-address input[type=\'text\'], #billing-address input[type=\'password\'], #billing-address input[type=\'checkbox\']:checked, #billing-address input[type=\'radio\']:checked, #billing-address input[type=\'hidden\'], #billing-address select, #billing-address textarea'),
+              dataType: 'json',
+              beforeSend: function() {
+                $('#button-register').attr('disabled', true);
+                $('#button-register').after('<span class="wait">&nbsp;<img src="/media/j2store/images/loader.gif" alt="" /></span>');
+              },
+              complete: function() {
+                $('#button-register').attr('disabled', false);
+                $('.wait').remove();
+              },
+              success: function(json) {
+                $('.warning, .j2error').remove();
+
+                if (json['redirect']) {
+                  location = json['redirect'];
+                } else if (json['error']) {
+                  if (json['error']['warning']) {
+                    $('#billing-address .checkout-content').prepend('<div class="warning alert alert-block alert-danger" style="display: none;">' + json['error']['warning'] + '<button data-dismiss="alert" class="close" type="button">×</button></div>');
+
+                    $('.warning').fadeIn('slow');
+                  }
+
+                  $.each( json['error'], function( key, value ) {
+                    if (value) {
+                      $('#billing-address #'+key).after('<br class="j2error" /><span class="j2error">' + value + '</span>');
+                    }
+                    //alert( key + ": " + value );
+                    });
+
+                  if (json['error']['password']) {
+                    $('#billing-address input[name=\'password\'] + br').after('<span class="j2error">' + json['error']['password'] + '</span>');
+                  }
+
+                  if (json['error']['confirm']) {
+                    $('#billing-address input[name=\'confirm\'] + br').after('<span class="j2error">' + json['error']['confirm'] + '</span>');
+                  }
+
+                } else {
+                          $.ajax({
+                    url: '/index.php/component/j2store/carts',
+                    type: 'post',
+                    cache: false,
+                    data: 'option=com_j2store&view=checkout&task=shipping_payment_method',
+                    dataType: 'html',
+                    success: function(html) {
+                      $('#shipping-payment-method .checkout-content').html(html);
+
+                      $('#billing-address .checkout-content').slideUp('slow');
+
+                      $('#shipping-payment-method .checkout-content').slideDown('slow');
+
+                      $('#checkout .checkout-heading a').remove();
+                      $('#billing-address .checkout-heading a').remove();
+                      //$('#payment-method .checkout-heading a').remove();
+                      $('#shipping-payment-method .checkout-heading a').remove();
+
+                      $('#billing-address .checkout-heading').append('<a>Change</a>');
+                      $(window).scrollTop(200);
+                    },
+                    error: function(xhr, ajaxOptions, thrownError) {
+                      //alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+                    }
+                  });
+
+                  $.ajax({
+                    url: '/index.php/component/j2store/carts',
+                    type: 'post',
+                    cache: false,
+                    data: 'option=com_j2store&view=checkout&task=billing_address',
+                    dataType: 'html',
+                    success: function(html) {
+                      $('#billing-address .checkout-content').html(html);
+
+                      $('#billing-address .checkout-heading span').html('Billing Address');
+                    },
+                    error: function(xhr, ajaxOptions, thrownError) {
+                      //alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+                    }
+                  });
+                }
+              },
+              error: function(xhr, ajaxOptions, thrownError) {
+                //alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+              }
+            });
+          });
+          })(j2store.jQuery);
+
+          //billing address
+          (function($) {
+          $(document).on('click', '#button-billing-address', function() {
+            $.ajax({
+              url: '/index.php/component/j2store/carts',
+              type: 'post',
+              cache: false,
+              data: $('#billing-address input[type=\'text\'], #billing-address input[type=\'password\'], #billing-address input[type=\'checkbox\']:checked, #billing-address input[type=\'radio\']:checked, #billing-address input[type=\'hidden\'], #billing-address select, #billing-address textarea'),
+              dataType: 'json',
+              beforeSend: function() {
+                $('#button-billing-address').attr('disabled', true);
+                $('#button-billing-address').after('<span class="wait">&nbsp;<img src="/media/j2store/images/loader.gif" alt="" /></span>');
+              },
+              complete: function() {
+                $('#button-billing-address').attr('disabled', false);
+                $('.wait').remove();
+              },
+              success: function(json) {
+                $('.warning, .j2error').remove();
+
+                if (json['redirect']) {
+                  location = json['redirect'];
+                } else if (json['error']) {
+                  if (json['error']['warning']) {
+                    $('#billing-address .checkout-content').prepend('<div class="warning" style="display: none;">' + json['error']['warning'] + '<button data-dismiss="alert" class="close" type="button">×</button></div>');
+
+                    $('.warning').fadeIn('slow');
+                  }
+
+                  $.each( json['error'], function( key, value ) {
+                    if (value) {
+                      $('#billing-address #'+key).after('<br class="j2error" /><span class="j2error">' + value + '</span>');
+                    }
+                  });
+
+                } else {
+                          $.ajax({
+                    url: '/index.php/component/j2store/carts',
+                    type: 'post',
+                    cache: false,
+                    data: 'option=com_j2store&view=checkout&task=shipping_payment_method',
+                    dataType: 'html',
+                    success: function(html) {
+                      $('#shipping-payment-method .checkout-content').html(html);
+
+                      $('#billing-address .checkout-content').slideUp('slow');
+
+                      $('#shipping-payment-method .checkout-content').slideDown('slow');
+
+                      $('#billing-address .checkout-heading a').remove();
+                      $('#shipping-payment-method .checkout-heading a').remove();
+
+                      $('#billing-address .checkout-heading').append('<a>Change</a>');
+                      $(window).scrollTop(200);
+                    },
+                    error: function(xhr, ajaxOptions, thrownError) {
+                      //alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+                    }
+                  });
+
+                  $.ajax({
+                    url: '/index.php/component/j2store/carts',
+                    type: 'post',
+                    cache: false,
+                    data: 'option=com_j2store&view=checkout&task=billing_address',
+                    dataType: 'html',
+                    success: function(html) {
+                      $('#billing-address .checkout-content').html(html);
+                    },
+                    error: function(xhr, ajaxOptions, thrownError) {
+                      //alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+                    }
+                  });
+                }
+              },
+              error: function(xhr, ajaxOptions, thrownError) {
+                //alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+              }
+            });
+          });
+          })(j2store.jQuery);
+
+          //Shipping Address
+          (function($) {
+          $(document).on('click', '#button-shipping-address', function() {
+            $.ajax({
+              url: '/index.php/component/j2store/carts',
+              type: 'post',
+              cache: false,
+              data: $('#shipping-address input[type=\'text\'], #shipping-address input[type=\'hidden\'], #shipping-address input[type=\'password\'], #shipping-address input[type=\'checkbox\']:checked, #shipping-address input[type=\'radio\']:checked, #shipping-address select, #shipping-address textarea'),
+              dataType: 'json',
+              beforeSend: function() {
+                $('#button-shipping-address').attr('disabled', true);
+                $('#button-shipping-address').after('<span class="wait">&nbsp;<img src="/media/j2store/images/loader.gif" alt="" /></span>');
+              },
+              complete: function() {
+                $('#button-shipping-address').attr('disabled', false);
+                $('.wait').remove();
+              },
+              success: function(json) {
+                $('.warning, .j2error').remove();
+                if (json['redirect']) {
+                  location = json['redirect'];
+                } else if (json['error']) {
+                  if (json['error']['warning']) {
+                    $('#shipping-address .checkout-content').prepend('<div class="warning alert alert-danger" style="display: none;">' + json['error']['warning'] + '<button data-dismiss="alert" class="close" type="button">×</button></div>');
+
+                    $('.warning').fadeIn('slow');
+                  }
+
+                  $.each( json['error'], function( key, value ) {
+                    if (value) {
+                      $('#shipping-address #'+key).after('<br class="j2error" /><span class="j2error">' + value + '</span>');
+                    }
+                  });
+
+                } else {
+                  $.ajax({
+                    url: '/index.php/component/j2store/carts',
+                    type: 'post',
+                    cache: false,
+                    data: 'option=com_j2store&view=checkout&task=shipping_payment_method',
+                    dataType: 'html',
+                    success: function(html) {
+                      $('#shipping-payment-method .checkout-content').html(html);
+
+                      $('#shipping-address .checkout-content').slideUp('slow');
+
+                      $('#shipping-payment-method .checkout-content').slideDown('slow');
+
+                      $('#shipping-address .checkout-heading a').remove();
+                      $('#shipping-payment-method .checkout-heading a').remove();
+                      //$('#payment-method .checkout-heading a').remove();
+
+                      $('#shipping-address .checkout-heading').append('<a>Change</a>');
+                      $(window).scrollTop(200);
+                      $.ajax({
+                        url: '/index.php/component/j2store/carts',
+                        type: 'post',
+                        cache: false,
+                        data: 'option=com_j2store&view=checkout&task=shipping_address',
+                        dataType: 'html',
+                        success: function(html) {
+                          $('#shipping-address .checkout-content').html(html);
+                        },
+                        error: function(xhr, ajaxOptions, thrownError) {
+                          //alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+                        }
+                      });
+                    },
+                    error: function(xhr, ajaxOptions, thrownError) {
+                      //alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+                    }
+                  });
+
+                  $.ajax({
+                    url: '/index.php/component/j2store/carts',
+                    type: 'post',
+                    cache: false,
+                    data: 'option=com_j2store&view=checkout&task=billing_address',
+                    dataType: 'html',
+                    success: function(html) {
+                      $('#billing-address .checkout-content').html(html);
+                    },
+                    error: function(xhr, ajaxOptions, thrownError) {
+                      //alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+                    }
+                  });
+                }
+              },
+              error: function(xhr, ajaxOptions, thrownError) {
+                //alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+              }
+            });
+          });
+          })(j2store.jQuery);
+
+          //Guest
+          (function($) {
+          $(document).on('click', '#button-guest', function() {
+            $.ajax({
+              url: '/index.php/component/j2store/carts',
+              type: 'post',
+              cache: false,
+              data: $('#billing-address input[type=\'text\'], #billing-address input[type=\'checkbox\']:checked, #billing-address input[type=\'radio\']:checked, #billing-address input[type=\'hidden\'], #billing-address select, #billing-address textarea'),
+              dataType: 'json',
+              beforeSend: function() {
+                $('#button-guest').attr('disabled', true);
+                $('#button-guest').after('<span class="wait">&nbsp;<img src="/media/j2store/images/loader.gif" alt="" /></span>');
+              },
+              complete: function() {
+                $('#button-guest').attr('disabled', false);
+                $('.wait').remove();
+              },
+              success: function(json) {
+                $('.warning, .j2error').remove();
+
+                if (json['redirect']) {
+                  location = json['redirect'];
+                } else if (json['error']) {
+                  if (json['error']['warning']) {
+                    $('#billing-address .checkout-content').prepend('<div class="warning alert alert-danger" style="display: none;">' + json['error']['warning'] + '<button data-dismiss="alert" class="close" type="button">×</button></div>');
+
+                    $('.warning').fadeIn('slow');
+                  }
+
+                  $.each( json['error'], function( key, value ) {
+                    if (value) {
+                      $('#billing-address #'+key).after('<br class="j2error" /><span class="j2error">' + value + '</span>');
+                    }
+                  });
+
+                } else {
+                          $.ajax({
+                    url: '/index.php/component/j2store/carts',
+                    type: 'post',
+                    cache: false,
+                    data: 'option=com_j2store&view=checkout&task=shipping_payment_method',
+                    dataType: 'html',
+                    success: function(html) {
+                      $('#shipping-payment-method .checkout-content').html(html);
+
+                      $('#billing-address .checkout-content').slideUp('slow');
+
+                      $('#shipping-payment-method .checkout-content').slideDown('slow');
+
+                      $('#billing-address .checkout-heading a').remove();
+                      $('#shipping-payment-method .checkout-heading a').remove();
+
+                      $('#billing-address .checkout-heading').append('<a>Change</a>');
+                      $(window).scrollTop(200);
+                    },
+                    error: function(xhr, ajaxOptions, thrownError) {
+                      //alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+                    }
+                  });
+                        }
+              },
+              error: function(xhr, ajaxOptions, thrownError) {
+                //alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+              }
+            });
+          });
+          })(j2store.jQuery);
+
+          // Guest Shipping
+          (function($) {
+          $(document).on('click', '#button-guest-shipping', function() {
+            $.ajax({
+              url: '/index.php/component/j2store/carts',
+              type: 'post',
+              cache: false,
+              data: $('#shipping-address input[type=\'text\'], #shipping-address input[type=\'checkbox\']:checked, #shipping-address input[type=\'radio\']:checked, #shipping-address input[type=\'hidden\'], #shipping-address select, #shipping-address textarea'),
+              dataType: 'json',
+              beforeSend: function() {
+                $('#button-guest-shipping').attr('disabled', true);
+                $('#button-guest-shipping').after('<span class="wait">&nbsp;<img src="/media/j2store/images/loader.gif" alt="" /></span>');
+              },
+              complete: function() {
+                $('#button-guest-shipping').attr('disabled', false);
+                $('.wait').remove();
+              },
+              success: function(json) {
+                $('.warning, .j2error').remove();
+
+                if (json['redirect']) {
+                  location = json['redirect'];
+                } else if (json['error']) {
+                  if (json['error']['warning']) {
+                    $('#shipping-address .checkout-content').prepend('<div class="warning alert alert-danger" style="display: none;">' + json['error']['warning'] + '<button data-dismiss="alert" class="close" type="button">×</button></div>');
+
+                    $('.warning').fadeIn('slow');
+                  }
+
+                  $.each( json['error'], function( key, value ) {
+                    if (value) {
+                      $('#shipping-address #'+key).after('<br class="j2error" /><span class="j2error">' + value + '</span>');
+                    }
+                  });
+                } else {
+                  $.ajax({
+                    url: '/index.php/component/j2store/carts',
+                    type: 'post',
+                    cache: false,
+                    data: 'option=com_j2store&view=checkout&task=shipping_payment_method',
+                    dataType: 'html',
+                    success: function(html) {
+                      $('#shipping-payment-method .checkout-content').html(html);
+
+                      $('#shipping-address .checkout-content').slideUp('slow');
+
+                      $('#shipping-payment-method .checkout-content').slideDown('slow');
+
+                      $('#shipping-address .checkout-heading a').remove();
+                      $('#shipping-payment-method .checkout-heading a').remove();
+
+                      $('#shipping-address .checkout-heading').append('<a>Change</a>');
+                      $(window).scrollTop(200);
+                    },
+                    error: function(xhr, ajaxOptions, thrownError) {
+                      //alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+                    }
+                  });
+                }
+              },
+              error: function(xhr, ajaxOptions, thrownError) {
+                //alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+              }
+            });
+          });
+          })(j2store.jQuery);
+
+          //shipping and payment methods
+          (function($) {
+          $(document).on('click', '#button-payment-method', function() {
+            $.ajax({
+              url: '/index.php/component/j2store/carts',
+              type: 'post',
+              cache: false,
+              data: $('#shipping-payment-method input[type=\'text\'], #shipping-payment-method input[type=\'hidden\'], #shipping-payment-method input[type=\'radio\']:checked, #shipping-payment-method input[type=\'checkbox\']:checked, #shipping-payment-method textarea, #shipping-payment-method select'),
+              dataType: 'json',
+              beforeSend: function() {
+                $('#button-payment-method').attr('disabled', true);
+                $('#button-payment-method').after('<span class="wait">&nbsp;<img src="/media/j2store/images/loader.gif" alt="" /></span>');
+              },
+              complete: function() {
+
+              },
+              success: function(json) {
+                $('.warning, .j2error').remove();
+
+                if (json['redirect']) {
+                  location = json['redirect'];
+                } else if (json['error']) {
+                  $('.checkout-content').scrollTop();
+                  if (json['error']['shipping']) {
+                    $('#shipping_error_div').html('<span class="j2error">' + json['error']['shipping'] + '</span>');
+                    $(window).scrollTop($('#shipping-payment-method').offset().top);
+                  }
+
+                  if (json['error']['warning']) {
+                    $('#shipping-payment-method .checkout-content').prepend('<div class="warning alert alert-danger" style="display: none;">' + json['error']['warning'] + '<button data-dismiss="alert" class="close" type="button">×</button></div>');
+
+                    $('.warning').fadeIn('slow');
+                    $(window).scrollTop($('#shipping-payment-method .checkout-content .warning').offset().top);
+                  }
+
+                  $.each( json['error'], function( key, value ) {
+                    if (value) {
+                      $('#shipping-payment-method #'+key).after('<br class="j2error" /><span class="j2error">' + value + '</span>');
+                    }
+                  });
+
+
+                } else {
+                  $.ajax({
+                    url: '/index.php/component/j2store/carts',
+                    type: 'post',
+                    cache: false,
+                    data: 'option=com_j2store&view=checkout&task=confirm',
+                    dataType: 'html',
+                    success: function(html) {
+                      $('#confirm .checkout-content').html(html);
+
+                      $('#shipping-payment-method .checkout-content').slideUp('slow');
+
+                      $('#confirm .checkout-content').slideDown('slow');
+
+                      $('#shipping-payment-method .checkout-heading a').remove();
+
+                      $('#shipping-payment-method .checkout-heading').append('<a>Change</a>');
+                    },
+                    error: function(xhr, ajaxOptions, thrownError) {
+                      //alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+                    }
+                  });
+                }
+                $('#button-payment-method').attr('disabled', false);
+                $('.wait').remove();
+              },
+              error: function(xhr, ajaxOptions, thrownError) {
+                //alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+              }
+            });
+          });
+          })(j2store.jQuery);
+
+          function getFormData(target) {
+            var d = document, ret = '';
+            if( typeof(target) == 'string' )
+              target = d.getElementById(target);
+            if( target === undefined )
+              target = d;
+            var typelist = ['input','select','textarea'];
+            for(var t in typelist ) {
+              t = typelist[t];
+              var inputs = target.getElementsByTagName(t);
+              for(var i = inputs.length - 1; i >= 0; i--) {
+                if( inputs[i].name && !inputs[i].disabled ) {
+                  var evalue = inputs[i].value, etype = '';
+                  if( t == 'input' )
+                    etype = inputs[i].type.toLowerCase();
+                  if( (etype == 'radio' || etype == 'checkbox') && !inputs[i].checked )
+                    evalue = null;
+                  if( (etype != 'file' && etype != 'submit') && evalue != null ) {
+                    if( ret != '' ) ret += '&';
+                    ret += encodeURI(inputs[i].name) + '=' + encodeURIComponent(evalue);
+                  }
+                }
+              }
+            }
+            return ret;
+          }
+
+
+          //-->
+        </script>
+      </div>
+    </div>
+    <!-- //MAIN CONTENT -->
+  </div>
+</div>
+{% endblock %}

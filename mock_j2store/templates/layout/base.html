@@ -1,0 +1,29 @@
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<html
+  class="com_content view-category layout-ja_healthcareservice itemid-406 j31 mm-hover no-touch"
+  dir="ltr"
+  prefix="og: http://ogp.me/ns#"
+  slick-uniqueid="3"
+  lang="en-gb"
+>
+  {% include "layout/head.html" %}
+  <body>
+    {% include "layout/nav.html" %}
+    <div class="t3-wrapper">
+      <!-- Need this wrapper for off-canvas menu. Remove if you don't use of-canvas -->
+      <div class="container-hd">
+        {% include "layout/header.html" %}
+
+        <div id="t3-mainbody" class="container t3-mainbody">
+          <div class="row">
+            <!-- MAIN CONTENT -->
+            {% block main %}{% endblock %}
+            <!-- //MAIN CONTENT -->
+          </div>
+        </div>
+
+        {% include "layout/footer.html" %}
+      </div>
+    </div>
+  </body>
+</html>
