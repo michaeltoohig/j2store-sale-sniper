@@ -1,0 +1,109 @@
+	
+<div id="akeeba-renderjoomla">
+
+	<input type="radio" name="billing_address" value="existing" id="billing-address-existing" checked="checked" />
+	<label for="billing-address-existing">I want to use an existing address</label>
+	<div id="billing-existing">
+		<select name="address_id" style="width: 100%; margin-bottom: 15px;" size="5">
+
+																<option value="393" selected="selected">
+						Joses Togis, Freswota 4, Port Vila, , , Vanuatu					</option>
+
+				
+					</select>
+	</div>
+	<p>
+		<input type="radio" name="billing_address" value="new" id="billing-address-new" />
+		<label for="billing-address-new">Create a new address</label>
+	</p>
+
+<div id="billing-new" style="display: none;">
+
+
+																													
+	
+	<div class="row-fluid">
+		<div class="span6"><span class="j2store_field_required">*</span><label for="first_name">First name</label><input class="inputbox" id="first_name"    type="text" name="first_name" value="" /></br /> <span class="j2store_field_required">*</span><label for="last_name">Last name</label><input class="inputbox" id="last_name"    type="text" name="last_name" value="" /></br /> <label for="phone_1">Phone</label><input class="inputbox" id="phone_1"    type="text" name="phone_1" value="" /></br /> <span class="j2store_field_required">*</span><label for="phone_2">Mobile</label><input class="inputbox" id="phone_2"    type="text" name="phone_2" value="" /></br />  </div>
+		<div class="span6"><span class="j2store_field_required">*</span><label for="address_1">Address Line 1</label><input class="inputbox" id="address_1"    type="text" name="address_1" value="" /></br /> <label for="address_2">Address Line 2</label><input class="inputbox" id="address_2"    type="text" name="address_2" value="" /></br /> <span class="j2store_field_required">*</span><label for="city">City</label><input class="inputbox" id="city"    type="text" name="city" value="" /></br />  <span class="j2store_field_required">*</span><label for="country_id">Country</label><select id="country_id" name="country_id" size="1"><option value="227" id="country_id_227" selected="selected" >Vanuatu</option></select></br /> </div>
+		</div>
+	
+</div>
+<br />
+<div class="buttons">
+	<div class="left">
+		<input type="button" value="Continue" id="button-billing-address" class="button btn btn-primary" />
+	</div>
+</div>
+<input type="hidden" name="email" value="togis42568@lutota.com" />
+<input type="hidden" name="task" value="billing_address_validate" />
+<input type="hidden" name="option" value="com_j2store" />
+<input type="hidden" name="view" value="checkout" />
+
+<script type="text/javascript"><!--
+	(function($) {
+		$(document).on('change', '#billing-address input[name=\'billing_address\']', function() {
+			if (this.value == 'new') {
+				$('#billing-existing').hide();
+				$('#billing-new').show();
+			} else {
+				$('#billing-existing').show();
+				$('#billing-new').hide();
+			}
+		});
+	})(j2store.jQuery);
+	//--></script>
+
+<script type="text/javascript"><!--
+	(function($) {
+		$('#billing-address select[name=\'country_id\']').bind('change', function() {
+			if (this.value == '') return;
+			$.ajax({
+				url: 'index.php?option=com_j2store&view=carts&task=getCountry&country_id=' + this.value,
+				dataType: 'json',
+				beforeSend: function() {
+					$('#billing-address select[name=\'country_id\']').after('<span class="wait">&nbsp;<img src="/media/j2store/images/loader.gif" alt="" /></span>');
+				},
+				complete: function() {
+					$('.wait').remove();
+				},
+				success: function(json) {
+					if (json['postcode_required'] == '1') {
+						$('#billing-postcode-required').show();
+					} else {
+						$('#billing-postcode-required').hide();
+					}
+
+					html = '<option value="">-- Select --</option>';
+
+					if (json['zone'] != '') {
+						default_zone_id = $('#billing-address #zone_id_default_value').val();
+						for (i = 0; i < json['zone'].length; i++) {
+							html += '<option value="' + json['zone'][i]['j2store_zone_id'] + '"';
+
+							if (json['zone'][i]['j2store_zone_id'] == default_zone_id) {
+								html += ' selected="selected"';
+							}
+
+							html += '>' + json['zone'][i]['zone_name'] + '</option>';
+						}
+					} else {
+						html += '<option value="0" selected="selected">J2STORE_CHECKOUT_NONE</option>';
+					}
+
+					$('#billing-address select[name=\'zone_id\']').html(html);
+				},
+				error: function(xhr, ajaxOptions, thrownError) {
+					//alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+				}
+			});
+		});
+	})(j2store.jQuery);
+
+	(function($) {
+		if($('#billing-address select[name=\'country_id\']').length > 0) {
+			$('#billing-address select[name=\'country_id\']').trigger('change');
+		}
+	})(j2store.jQuery);
+
+	//--></script>
+</div>

@@ -1,0 +1,80 @@
+	
+<div id="akeeba-renderjoomla">
+  <script type="text/javascript">
+    <!--
+    function j2storeGetPaymentForm(element, container) {
+      var url = '/component/j2store/carts';
+      var data = 'option=com_j2store&view=checkout&task=getPaymentForm&tmpl=component&payment_element='+ element;
+      j2storeDoTask(url, container, document.adminForm, '', data);
+    }
+    //-->
+  </script>
+  <!-- SHIPPING METHOD -->
+  
+  <!-- SHIPPING METHOD END -->
+  
+  
+    <div id='onCheckoutPayment_wrapper'>
+      <h3>
+        Select a payment method		</h3>
+      
+        
+                          <label class="payment-plugin-image-label payment_cash" >
+            <input value="payment_cash" class="payment_plugin"
+                   name="payment_plugin" type="radio"
+                   onclick="j2storeGetPaymentForm('payment_cash', 'payment_form_div');"
+              checked						   title="Select a payment method" />
+  
+                      Cash				</label>
+  
+                  
+        
+                          <label class="payment-plugin-image-label payment_sagepayform" >
+            <input value="payment_sagepayform" class="payment_plugin"
+                   name="payment_plugin" type="radio"
+                   onclick="j2storeGetPaymentForm('payment_sagepayform', 'payment_form_div');"
+                             title="Select a payment method" />
+  
+                      SagePay Form				</label>
+  
+                  
+            
+    </div>
+    <div class="j2error"></div>
+    <div id='payment_form_div' style="padding-top: 10px;">
+      
+  
+    </div>
+  
+  
+  
+  
+  
+  
+  
+    <div class="customer-note">
+      <h3>
+        Customer Note		</h3>
+      <textarea name="customer_note" rows="3" cols="40"></textarea>
+    </div>
+  
+  
+      <div id="checkbox_tos">
+      
+        By placing the order, you agree to our
+                Terms and conditions					        	</div>
+  
+  
+  <div class="buttons">
+    <div class="left">
+      <input type="button"
+             value="Continue"
+             id="button-payment-method" class="button btn btn-primary" />
+    </div>
+  </div>
+  <input type="hidden" name="task"
+         value="shipping_payment_method_validate" />
+  <input type="hidden" name="option" value="com_j2store" />
+  <input type="hidden" name="view" value="checkout" />
+  </div>
+  

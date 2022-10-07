@@ -14,5 +14,8 @@ WISHLIST_FILE = Path(os.environ.get("WISHLIST_FILE", "wishlist.pkl"))
 MOCK_MARKET_ITEMS_FILE = Path(os.environ.get("MOCK_MARKET_ITEMS_FILE", "market-items.pkl"))
 
 REQUEST_SESSION_KEEP = os.environ.get("REQUEST_SESSION_KEEP", False)
+if REQUEST_SESSION_KEEP:
+    REQUEST_SESSION_KEEP = True if REQUEST_SESSION_KEEP in [1, "True", True] else False
 REQUEST_SESSION_DATA_DIRECTORY = os.environ.get("REQUEST_SESSION_DATA_DIRECTORY", "log/sessions")
-MARKET_ITEMS_PER_PAGE = os.environ.get("MARKET_ITEMS_PER_PAGE", 24)  # static
+
+MARKET_ITEMS_PER_PAGE = 24  # static

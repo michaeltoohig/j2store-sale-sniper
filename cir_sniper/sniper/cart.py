@@ -123,13 +123,14 @@ class Cart:
             "task": "billing_address",
         }
         resp = self.session.post(self.CART_URL, data=get_existing_address_form_data)
-        soup = BeautifulSoup(resp.text)
+        soup = BeautifulSoup(resp.text, "html.parser")
         address_id = soup.find("div", {"id": "billing-existing"}).option.attrs["value"]
         country_id = soup.find("select", {"name": "country_id"}).option.attrs["value"]
         inputs = soup.find_all("input")
         validate_billing_address_form_data = {i.get("name"): i.get("value") for i in inputs if i.get("name", False)}
         validate_billing_address_form_data["country_id"] = country_id
         validate_billing_address_form_data["address_id"] = address_id
+        validate_billing_address_form_data["billing_address"] = "existing"
         self.session.post(self.CART_URL, data=validate_billing_address_form_data)
         get_payment_methods_form_data = {
             "option": "com_j2store",
@@ -152,7 +153,7 @@ class Cart:
         }
         resp = self.session.post(self.CART_URL, data=get_confirm_form_data)
         soup = BeautifulSoup(resp.text, "html.parser")
-        inputs = soup.find("form", {"id": "cash_form"})
+        inputs = soup.find("form", {"id": "cash_form"}).find_all("input")
         validate_confirm_payment_form_data = {i.get("name"): i.get("value") for i in inputs if i.get("name", False)}
         self.session.post(self.CART_URL, data=validate_confirm_payment_form_data)
-        logger.info("Purchase complete :)")
+        logger.info("Checkout completed :)")

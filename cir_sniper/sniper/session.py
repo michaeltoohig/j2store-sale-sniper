@@ -18,7 +18,8 @@ class SniperSession:
         # Setup directory to save session responses
         now = datetime.now()
         self.session_data_path = Path(REQUEST_SESSION_DATA_DIRECTORY) / now.strftime("%Y-%m-%dT%H:%M:%S")
-        self.session_data_path.mkdir(parents=True, exist_ok=True)
+        if REQUEST_SESSION_KEEP:
+            self.session_data_path.mkdir(parents=True, exist_ok=True)
 
     @property
     def cookies(self):
@@ -30,11 +31,15 @@ class SniperSession:
         logger.debug(f"{request_id}: {method} {url} {kwargs}")
         resp = self.session.request(method=method, url=url, **kwargs)
         logger.debug(f"{request_id} complete")
-        resp.raise_for_status()
-        if REQUEST_SESSION_KEEP:
-            cleaned_url = url.replace(BASE_URL, '').replace('/', '_')
-            respFile = self.session_data_path / f"{method}__{cleaned_url}__{request_id}.html"
-            respFile.write_text(resp.text)
+        try:
+            resp.raise_for_status()
+        except:
+            pass
+        finally:
+            if REQUEST_SESSION_KEEP:
+                cleaned_url = url.replace(BASE_URL, '').replace('/', '_')
+                respFile = self.session_data_path / f"{method}__{cleaned_url}__{request_id}.html"
+                respFile.write_text(resp.text)
         return resp
 
     def get(self, url: str, **kwargs):

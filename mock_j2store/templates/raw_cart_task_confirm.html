@@ -1,0 +1,134 @@
+	
+<div id="akeeba-renderjoomla">
+  <div class="j2store">
+  <!--    ORDER SUMMARY   -->
+        <div class="j2storeOrderSummary">
+          <h3>Order summary</h3>
+    <table class="j2store-cart-table table table-bordered">
+      <thead>
+        <tr>
+          <th width="70%">Item</th>
+          <th width="10%">Quantity</th>
+                  <th width="20%">Total</th>
+        </tr>
+        </thead>
+        <tbody>
+  
+                          <tr>
+            <td>
+                          <span class="cart-product-name">
+                Lot 7 - VTS 
+              </span>
+              <br />
+                            <span class="cart-item-options">
+                              </span>
+              
+              
+                <span class="cart-product-unit-price">
+                  <span class="cart-item-title">Unit Price</span>								
+                  <span class="cart-item-value">
+                  VT500								</span>
+                </span>
+              
+              
+                                                </td>
+            <td>1</td>
+  
+            
+            <td class="cart-line-subtotal">
+              VT500											</td>
+          </tr>
+                </tbody>
+        <tfoot class="cart-footer">
+                                <tr>
+                <th scope="row" colspan="2"> Subtotal</th>
+                <td>VT500</td>
+              </tr>
+                        <tr>
+                <th scope="row" colspan="2"> Total</th>
+                <td>VT500</td>
+              </tr>
+                          </tfoot>
+        </table>		</div>
+    
+      
+          <!--    PAYMENT METHOD   -->
+      <h3>
+        Payment method		</h3>
+    
+      <div class="payment">
+        
+  <form action="/component/j2store/checkout" method="post" name="cash_form" id="cash_form" enctype="multipart/form-data">
+  
+      <div class="note note-payment_cash">
+  
+                            <p class="j2store-payment-display-name">
+               <strong>Cash</strong>
+          </p>
+          <p class="j2store-on-before-payment-text"></p>
+  
+      </div>
+  
+    <input type="button" onclick="doSendRequest()" id="cash-submit-button" class="j2store_cart_button button btn btn-primary" value="Place order" />
+      <input type='hidden' name='order_id' value='1665029979996'>
+      <input type='hidden' name='orderpayment_type' value='payment_cash'>
+    <input type="hidden" name="hash" value="be7bbc561d9cd7a83b1664da7571868e"/>
+    <input type='hidden' name='option' value='com_j2store' />
+    <input type='hidden' name='view' value='checkout' />
+    <input type='hidden' name='task' value='confirmPayment'>
+    <input type='hidden' name='paction' value='process'>
+    <div class="plugin_error_div">
+      <span class="plugin_error"></span>
+      <span class="plugin_error_instruction"></span>
+    </div>
+    <input type="hidden" name="4780b601b29b5808c77a0f9a19b77044" value="1" /></form>
+  <script>
+    function doSendRequest() {
+      (function($) {
+        var button = j2store.jQuery('#cash-submit-button');
+        //get all form values
+        var form = $('#cash_form');
+        var values = form.serializeArray();
+        //submit the form using ajax
+        var jqXHR =	$.ajax({
+          url: '/component/j2store/carts',
+          type: 'post',
+          data: values,
+          dataType: 'json',
+          beforeSend: function() {
+            $(button).attr('disabled', 'disabled');
+            $(button).val('Processing payment...please wait');
+            $(button).after('<span class="wait">&nbsp;<img src="/media/j2store/images/loader.gif" alt="" /></span>');
+          }
+        });
+  
+        jqXHR.done(function(json) {
+          form.find('.j2success, .j2warning, .j2attention, .j2information, .j2error').remove();
+          //console.log(json);
+          if (json['error']) {
+            form.find('.plugin_error').after('<span class="j2error">' + json['error']+ '</span>');
+            form.find('.plugin_error_instruction').after('<br /><span class="j2error">J2STORE_STRIPE_ON_ERROR_INSTRUCTIONS</span>');
+            $(button).val('Error processing payment');
+          }
+  
+          if (json['redirect']) {
+            $(button).val('Completed processing payment');
+            window.location.href = json['redirect'];
+          }
+  
+        });
+  
+        jqXHR.fail(function() {
+          $(button).val('Error processing payment');
+        });
+  
+        jqXHR.always(function() {
+          $('.wait').remove();
+        });
+  
+      })(j2store.jQuery);
+    }
+  </script>		</div>
+    
+    </div></div>
+  

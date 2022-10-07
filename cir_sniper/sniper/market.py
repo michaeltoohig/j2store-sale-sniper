@@ -101,5 +101,6 @@ class Market:
 
     def export_items(self):
         """Export to pickle for use in `mock_j2store`."""
+        logger.debug("Exporting market items")
         with MOCK_MARKET_ITEMS_FILE.open("wb") as f:
             pickle.dump([asdict(i) for i in self.items.values()], f)

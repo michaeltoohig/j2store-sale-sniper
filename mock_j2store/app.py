@@ -153,3 +153,25 @@ def get_remove_item():
 @app.get("/component/j2store/checkout")
 def get_checkout():
     return render_template("checkout.html")
+
+
+@app.post("/component/j2store/carts")
+def post_cart():
+    """Handle payment."""
+    view = request.form.get("view")
+    assert view == "checkout", "unexpected view value"
+    task = request.form.get("task")
+    if task == "billing_address":
+        return render_template("raw_cart_task_billing_address.html")
+    elif task == "billing_address_validate":
+        return ""
+    elif task == "shipping_payment_method":
+        return render_template("raw_cart_task_shipping_payment_validate.html")
+    elif task == "shipping_payment_method_validate":
+        return ""
+    elif task == "confirm":
+        return render_template("raw_cart_task_confirm.html")
+    elif task == "confirmPayment":
+        return ""
+    else:
+        abort(400)
